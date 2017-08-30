@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block description %}
+    <h1>Albums - {{ username }}</h1>
+{% endblock %}
+{% block center %}
+
+    {% if edit %}
+        <table>
+            <tr>
+                <th>Album</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            {% for album in albums %}
+            <tr>
+                <td>{{ album['title'] }}</td>
+                <td><a href="{{ url_for('album.album_edit_route', albumid=album['albumid']) }}">[Edit]</a></td>
+                <td>
+                    <form href="{{ url_for('albums.albums_edit_route', username=username) }}" method="POST" id="delete_{{ album['albumid'] }}_form">
+                    <input type="hidden" name="op" value="delete" />
+                    <input type="hidden" name="albumid" value="{{ album['albumid'] }}" />
+                    </form>
+                    <button type="submit" form="delete_{{ album['albumid'] }}_form" id="delete_album_{{ album['albumid'] }}">[Delete]</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <form href="{{ url_for('albums.albums_edit_route', username=username) }}" method="POST" id="add_album_form">
+        New Album: <br>
+        <input type="text" name="title" id="album_add_name" />
+        <input type="hidden" name="op" value="add" />
+        <input type="hidden" name="username" value="{{ username }}" />
+        </form>
+        <button type="submit" form="add_album_form" id="album_add_submit">[Add]</button>
+
+    {% else %}
+        <a href="{{ url_for('albums.albums_edit_route', username=username) }}" id='user_albums_edit{{ username }}'>Edit Albums</a>
+        <table class="table">
+        <thead>
+            <tr>
+                <td>Album</td>
+            </tr>
+        </thead>
+        <tbody>
+        {% for album in albums %}
+        <tr>
+            <td>
+                <a href="{{ url_for('album.album_route', albumid=album['albumid']) }}" id="album_{{ album['albumid'] }}_link">{{ album['title'] }}</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+    {% endif %}
+{% endblock %}
+
+

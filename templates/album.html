@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block description %}
+	<h1>Album</h1>
+	<p class="important">Title: {{ title['title'] }}</p>
+{% endblock %}
+
+{% block content %}
+	{% if edit %}
+		<div> This is only on the edit page </div>
+	{% else %}
+		<a href="{{ url_for('album.album_edit_route', albumid=albumid) }}">Edit View</a>
+	{% endif %}
+
+	<table>
+	<tr>
+		<td>Photo</td>
+		{% if edit %}
+			<td>Delete</td>
+		{% endif %}
+	</tr>
+
+	{% for picid, format, sequencenum in picid_format_sequencenum_tuples %}
+		<tr>
+			<td><a href="{{ url_for('pic.pic_route', picid=picid) }}" id="pic_{{ picid }}_link"><img src="/static/images/{{ picid }}.{{ format }}" witdth=100></a></td>
+			{% if edit %}
+				<td>
+					<form method="post", action="{{ url_for('album.album_edit_route', albumid=albumid) }}" id="delete_{{ picid }}_form">
+						<input type="hidden" name="op" value="delete">
+						<input type="hidden" name="picid" value="{{ picid }}">
+					</form>
+					<button type="submit" form="delete_{{ picid }}_form" id="delete_pic_{{ picid }}">[Delete]</button>
+				</td>
+			{% endif %}
+		</tr>
+	{% endfor %}
+
+	</table>
+
+	{% if edit %}
+		<form method="post" action="{{ url_for('album.album_edit_route', albumid=albumid) }}" enctype="multipart/form-data" id="add_photo_form">
+			<input type="file" name="file" value="file" id="file_input">
+			<input type="hidden" name="op" value="add">
+		</form>
+		<button type="submit" form="add_photo_form" id="file_submit">[Submit]</button>
+	{% end if %}
+
+{% endblock %}

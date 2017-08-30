@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<h1>PIC</h1>
+{% endblock %}
+
+{% block content %}
+	<img src="static/images/{{ picid }}.{{ pformat }}">
+	{% if does_prev_pic_exist %}
+	<a href="{{ url_for('pic.pic_route', picid=prev_picid) }}" id="prev_pic">Previous</a>
+	{% endif %}
+
+	{% if does_next_pic_exist %}
+	<a href="{{ url_for('pic.pic_route', picid=next_picid) }}" id="next_pic">Next</a>
+	{% endif %}
+
+	<a href="{{ url_for('album.album_route', albumid=albumid) }}" id="parent_album">Back to Album</a>
+
+{% endblock %}

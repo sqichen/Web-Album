@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+
+{% block description %}
+	<p class="center">Welcome! This is a simple online photo service. Feel free to create and edit your albums. </p>
+{% endblock %}
+
+{% block content %}
+	<table border="2">
+		<tr>
+			<td>
+				Username
+			</td>
+		</tr>
+		{% for user in users %}
+		<tr>
+			<td>
+			<a href="{{ url_for('albums.albums_route', username=user['username']) }}"
+			   id="user_album_{{ user['username'] }}">
+			</td>
+		</tr>
+		{% endfor %}
+	</table>
+
+{% endblock %}
